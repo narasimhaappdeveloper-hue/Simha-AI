@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIMHA AI | Personal AI Developer</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #0b1020;
+  --panel: #131b2e;
+  --border: #27334b;
+  --text: #edf2ff;
+  --muted: #9aa8c2;
+  --primary: #8b7cff;
+  --green: #47dfb1;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, Arial, sans-serif;
+  min-height: 100vh;
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  background: #0d1425;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: .5px;
+}
+
+.logo span {
+  color: var(--primary);
+}
+
+.status {
+  color: var(--green);
+  font-size: 11px;
+  border: 1px solid #285f55;
+  border-radius: 20px;
+  padding: 6px 9px;
+}
+
+.layout {
+  display: flex;
+  min-height: calc(100vh - 65px);
+}
+
+.sidebar {
+  width: 210px;
+  padding: 16px 10px;
+  border-right: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.nav-btn {
+  width: 100%;
+  display: block;
+  background: transparent;
+  color: var(--muted);
+  border: 0;
+  text-align: left;
+  padding: 13px 12px;
+  border-radius: 10px;
+  margin-bottom: 5px;
+}
+
+.nav-btn:hover, .nav-btn.active {
+  background: #242444;
+  color: white;
+}
+
+main {
+  flex: 1;
+  min-width: 0;
+  padding: 24px;
+  max-width: 1200px;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+h1 {
+  font-size: clamp(24px, 4vw, 34px);
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  padding: 18px;
+  margin-bottom: 15px;
+  min-width: 0;
+}
+
+.card h3 {
+  font-size: 16px;
+  margin-bottom: 9px;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.icon {
+  font-size: 25px;
+  margin-bottom: 12px;
+}
+
+.primary, .secondary {
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 15px;
+  color: white;
+  margin-top: 13px;
+}
+
+.primary {
+  background: var(--primary);
+}
+
+.secondary {
+  background: #26334c;
+}
+
+.primary:hover {
+  opacity: .88;
+}
+
+input, textarea, select {
+  display: block;
+  width: 100%;
+  color: white;
+  background: #0c1425;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 13px;
+  margin-top: 10px;
+  outline: none;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+label {
+  display: block;
+  color: #c6d1e6;
+  font-size: 13px;
+  margin-top: 15px;
+}
+
+.chat-box {
+  min-height: 240px;
+  max-height: 420px;
+  overflow-y: auto;
+  margin: 15px 0;
+  padding: 12px;
+  background: #0c1425;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.message {
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.user {
+  background: #292649;
+}
+
+.assistant {
+  background: #17263a;
+}
+
+.small {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.result {
+  margin-top: 15px;
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+}
+
+.project-item {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.project-item:last-child {
+  border-bottom: 0;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  color: var(--green);
+  border: 1px solid #285f55;
+  border-radius: 20px;
+  padding: 4px 8px;
+  margin-top: 8px;
+}
+
+.empty {
+  color: var(--muted);
+  padding: 15px 0;
+}
+
+footer {
+  padding: 20px;
+  color: var(--muted);
+  text-align: center;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+}
+
+@media (max-width: 650px) {
+  .layout {
+    display: block;
+  }
+
+  .sidebar {
+    width: 100%;
+    display: flex;
+    gap: 5px;
+    overflow-x: auto;
+    padding: 10px;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-btn {
+    width: auto;
+    white-space: nowrap;
+    margin: 0;
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  main {
+    padding: 18px 13px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .status {
+    font-size: 10px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">SIMHA <span>AI</span></div>
+  <div class="status">● PERSONAL WORKSPACE</div>
+</header>
+
+<div class="layout">
+
+  <nav class="sidebar">
+    <button class="nav-btn active" data-page="dashboard">🏠 Dashboard</button>
+    <button class="nav-btn" data-page="developer">🤖 AI Developer</button>
+    <button class="nav-btn" data-page="clients">🔎 Client Finder</button>
+    <button class="nav-btn" data-page="proposal">✍️ Proposal</button>
+    <button class="nav-btn" data-page="projects">📁 My Projects</button>
+  </nav>
+
+  <main>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="page active">
+      <h1>Your Personal AI Workspace</h1>
+      <p class="subtitle">
+        Build websites, create applications and organize client opportunities
+        from one place.
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="icon">🤖</div>
+          <h3>AI Developer</h3>
+          <p>Describe your website or application idea.</p>
+          <button class="primary" onclick="showPage('developer')">
+            Start Building
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="icon">🔎</div>
+          <h3>Client Finder</h3>
+          <p>Prepare searches for relevant online project opportunities.</p>
+          <button class="primary" onclick="showPage('clients')">
+            Find Opportunities
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="icon">✍️</div>
+          <h3>Proposal Writer</h3>
+          <p>Draft a professional proposal for a potential client.</p>
+          <button class="secondary" onclick="showPage('proposal')">
+            Create Proposal
+          </button>
+        </div>
+
+        <div class="card">
+          <div class="icon">📁</div>
+          <h3>My Projects</h3>
+          <p>Keep track of your saved project ideas and drafts.</p>
+          <button class="secondary" onclick="showPage('projects')">
+            View Projects
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🚀 Your Mission</h3>
+        <p>
+          Use AI-assisted development to create useful digital products,
+          identify potential clients and build a sustainable business.
+        </p>
+      </div>
+    </section>
+
+    <!-- AI DEVELOPER -->
+    <section id="developer" class="page">
+      <h1>🤖 AI Developer</h1>
+      <p class="subtitle">
+        Describe what you want to build. This prototype organizes your
+        request; real AI generation will be connected through a backend later.
+      </p>
+
+      <div class="card">
+        <label for="idea">What do you want to create?</label>
+
+        <textarea id="idea"
+          placeholder="Example: Create a mobile-friendly website for a small shop with products, orders and expenses."></textarea>
+
+        <label for="projectType">Project type</label>
+        <select id="projectType">
+          <option>Business Website</option>
+          <option>Web Application</option>
+          <option>Portfolio Website</option>
+          <option>Landing Page</option>
+          <option>Business Management System</option>
+          <option>Other</option>
+        </select>
+
+        <button class="primary" onclick="prepareProject()">
+          Prepare Project
+        </button>
+
+        <button class="secondary" onclick="saveProject()">
+          Save Project
+        </button>
+
+        <div id="developerResult" class="result" hidden></div>
+      </div>
+
+      <div class="card">
+        <h3>Next development stage</h3>
+        <p>
+          Connect an AI model through a secure backend to generate real code,
+          explain errors and help build working applications.
+        </p>
+        <span class="badge">Backend integration pending</span>
+      </div>
+    </section>
+
+    <!-- CLIENT FINDER -->
+    <section id="clients" class="page">
+      <h1>🔎 Client Finder</h1>
+      <p class="subtitle">
+        Prepare focused searches for website and web application projects.
+      </p>
+
+      <div class="card">
+        <label for="service">What service do you offer?</label>
+        <select id="service">
+          <option>Website Development</option>
+          <option>Web Application Development</option>
+          <option>HTML CSS JavaScript Fixes</option>
+          <option>Landing Page Development</option>
+          <option>Business Dashboard Development</option>
+        </select>
+
+        <label for="keywords">Additional keywords</label>
+        <input id="keywords"
+          placeholder="Example: small business, responsive website">
+
+        <label for="budget">Minimum budget (optional)</label>
+        <input id="budget" type="number" min="0"
+          placeholder="Enter amount in USD">
+
+        <button class="primary" onclick="findOpportunities()">
+          Prepare Client Search
+        </button>
+
+        <div id="clientResult" class="result" hidden></div>
+      </div>
+
+      <div class="card">
+        <h3>Search project opportunities</h3>
+        <p>
+          These links open public project searches. They do not guarantee
+          available jobs, client replies or paid work.
+        </p>
+
+        <div class="project-item">
+          <strong>Upwork</strong>
+          <p>Search freelance development projects.</p>
+          <button class="secondary"
+            onclick="openSearch('https://www.upwork.com/nx/search/jobs/?q=website%20development')">
+            Open Search
+          </button>
+        </div>
+
+        <div class="project-item">
+          <strong>Fiverr</strong>
+          <p>Explore the freelance services marketplace.</p>
+          <button class="secondary"
+            onclick="openSearch('https://www.fiverr.com/')">
+            Explore Fiverr
+          </button>
+        </div>
+
+        <div class="project-item">
+          <strong>LinkedIn</strong>
+          <p>Explore web development opportunities.</p>
+          <button class="secondary"
+            onclick="openSearch('https://www.linkedin.com/jobs/search/?keywords=web%20developer%20freelance')">
+            Search Opportunities
+          </button>
+        </div>
+
+        <p class="small">
+          Automatic lead discovery, verification and scheduled updates
+          are not yet connected.
+        </p>
+      </div>
+    </section>
+
+    <!-- PROPOSAL -->
+    <section id="proposal" class="page">
+      <h1>✍️ Proposal Generator</h1>
+      <p class="subtitle">
+        Create a draft message for a potential client.
+      </p>
+
+      <div class="card">
+        <label for="clientName">Client name (if known)</label>
+        <input id="clientName" placeholder="Client name">
+
+        <label for="jobDescription">Project requirements</label>
+        <textarea id="jobDescription"
+          placeholder="Describe the work requested by the client"></textarea>
+
+        <label for="skills">Your relevant skills</label>
+        <input id="skills"
+          placeholder="Example: HTML, CSS, JavaScript">
+
+        <button class="primary" onclick="generateProposal()">
+          Generate Draft
+        </button>
+
+        <div id="proposalResult" class="result" hidden></div>
+
+        <button id="copyProposal" class="secondary"
+          onclick="copyProposalText()" hidden>
+          Copy Proposal
+        </button>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="page">
+      <h1>📁 My Projects</h1>
+      <p class="subtitle">
+        Your locally saved project drafts.
+      </p>
+
+      <div class="card">
+        <div id="projectList"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  SIMHA AI · Personal AI Development Workspace
+  <br>
+  Prototype version · AI backend not connected
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+
+function showPage(pageId) {
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.toggle("active", page.id === pageId);
+  });
+
+  document.querySelectorAll(".nav-btn").forEach(button => {
+    button.classList.toggle(
+      "active",
+      button.dataset.page === pageId
+    );
+  });
+
+  if (pageId === "projects") renderProjects();
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.querySelectorAll(".nav-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    showPage(button.dataset.page);
+  });
+});
+
+function prepareProject() {
+  const idea = $("idea").value.trim();
+  const type = $("projectType").value;
+  const result = $("developerResult");
+
+  if (!idea) {
+    alert("Please describe your project first.");
+    return;
+  }
+
+  result.hidden = false;
+  result.textContent =
+`PROJECT PLAN
+
+Project type: ${type}
+
+Your requirements:
+${idea}
+
+SUGGESTED NEXT STEPS
+
+1. Identify the required pages.
+2. List the features and buttons.
+3. Plan the mobile-friendly design.
+4. Build the frontend.
+5. Test the forms and interactions.
+6. Add a secure backend if required.
+7. Test and publish the project.
+
+NOTE:
+This is a locally generated project plan.
+A real AI model must be connected to generate
+intelligent responses and production code.`;
+}
+
+function getProjects() {
+  try {
+    return JSON.parse(localStorage.getItem("simhaProjects") || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveProject() {
+  const idea = $("idea").value.trim();
+  const type = $("projectType").value;
+
+  if (!idea) {
+    alert("Enter your project idea first.");
+    return;
+  }
+
+  const projects = getProjects();
+
+  projects.unshift({
+    id: Date.now(),
+    name: idea.slice(0, 55),
+    type,
+    idea,
+    date: new Date().toLocaleDateString()
+  });
+
+  try {
+    localStorage.setItem("simhaProjects", JSON.stringify(projects));
+    alert("Project saved on this device.");
+    renderProjects();
+  } catch {
+    alert("Unable to save. Check available browser storage.");
+  }
+}
+
+function renderProjects() {
+  const container = $("projectList");
+  const projects = getProjects();
+
+  container.replaceChildren();
+
+  if (!projects.length) {
+    const empty = document.createElement("p");
+    empty.className = "empty";
+    empty.textContent = "No saved projects yet.";
+    container.appendChild(empty);
+    return;
+  }
+
+  projects.forEach(project => {
+    const item = document.createElement("div");
+    item.className = "project-item";
+
+    const title = document.createElement("strong");
+    title.textContent = project.name;
+
+    const details = document.createElement("p");
+    details.textContent = `${project.type} · ${project.date}`;
+
+    const open = document.createElement("button");
+    open.className = "secondary";
+    open.textContent = "Open Project";
+    open.onclick = () => {
+      $("idea").value = project.idea;
+      $("projectType").value = project.type;
+      showPage("developer");
+    };
+
+    const remove = document.createElement("button");
+    remove.className = "secondary";
+    remove.textContent = "Delete";
+    remove.style.marginLeft = "8px";
+    remove.onclick = () => {
+      if (!confirm("Delete this saved project?")) return;
+
+      const updated = getProjects().filter(p => p.id !== project.id);
+      localStorage.setItem("simhaProjects", JSON.stringify(updated));
+      renderProjects();
+    };
+
+    item.append(title, details, open, remove);
+    container.appendChild(item);
+  });
+}
+
+function findOpportunities() {
+  const service = $("service").value;
+  const keywords = $("keywords").value.trim();
+  const budget = $("budget").value.trim();
+
+  const searchTerms = [service, keywords]
+    .filter(Boolean)
+    .join(" ");
+
+  const result = $("clientResult");
+  result.hidden = false;
+  result.replaceChildren();
+
+  const heading = document.createElement("strong");
+  heading.textContent = "Search prepared";
+
+  const description = document.createElement("p");
+  description.style.marginTop = "10px";
+  description.textContent =
+    `Service: ${service}\nKeywords: ${keywords || "None"}\nMinimum budget: ${budget ? "$" + budget : "Any"}\n\nChoose a marketplace below to explore matching opportunities.`;
+
+  const link = document.createElement("a");
+  link.href =
+    "https://www.upwork.com/nx/search/jobs/?q=" +
+    encodeURIComponent(searchTerms);
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = "Search matching Upwork projects";
+  link.style.display = "inline-block";
+  link.style.marginTop = "12px";
+  link.style.color = "#b5aaff";
+
+  result.append(heading, description, link);
+}
+
+function openSearch(url) {
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
+function generateProposal() {
+  const client = $("clientName").value.trim();
+  const job = $("jobDescription").value.trim();
+  const skills = $("skills").value.trim();
+
+  if (!job) {
+    alert("Enter the project requirements first.");
+    return;
+  }
+
+  const name = client || "there";
+  const skillText = skills || "web development";
+
+  const proposal =
+`Hello ${name},
+
+I am interested in helping with your project.
+
+Based on your description, you need:
+${job}
+
+My relevant skills include:
+${skillText}
+
+I would first review your requirements, confirm the scope,
+and then propose a suitable implementation.
+
+I would be happy to discuss the project details and timeline.
+
+Best regards,
+Narasimha
+Web App Developer`;
+
+  $("proposalResult").hidden = false;
+  $("proposalResult").textContent = proposal;
+  $("copyProposal").hidden = false;
+}
+
+async function copyProposalText() {
+  const text = $("proposalResult").textContent;
+
+  try {
+    await navigator.clipboard.writeText(text);
+    alert("Proposal copied.");
+  } catch {
+    const area = document.createElement("textarea");
+    area.value = text;
+    document.body.appendChild(area);
+    area.select();
+
+    try {
+      document.execCommand("copy");
+      alert("Proposal copied.");
+    } catch {
+      alert("Please select and copy the proposal manually.");
+    }
+
+    area.remove();
+  }
+}
+
+renderProjects();
+</script>
+
+</body>
+</html>
