@@ -2,723 +2,950 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SIMHA AI Workspace</title>
 
 <style>
-:root{
-  --bg:#0b1020;
-  --panel:#141c30;
-  --card:#1b2740;
-  --text:#f3f6ff;
-  --muted:#9ba9c7;
-  --accent:#7c6cff;
-  --border:#2c3955;
-}
 *{box-sizing:border-box}
+
 body{
   margin:0;
+  background:#09111f;
+  color:#f1f5f9;
   font-family:Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
 }
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-.app{max-width:1200px;margin:auto;padding:14px}
+
 header{
-  display:flex;justify-content:space-between;
-  align-items:center;gap:10px;flex-wrap:wrap;
-  padding:12px 0 18px;
+  padding:18px;
+  background:#111e32;
+  border-bottom:1px solid #293b58;
 }
-.logo{font-size:24px;font-weight:bold}
-.logo span{color:#8b80ff}
-.badge{
-  color:#9cf4c4;background:#12372d;
-  padding:7px 11px;border-radius:20px;font-size:12px
+
+header h1{margin:0;color:#91aaff}
+header p{margin:6px 0 0;color:#a9b8cf;font-size:13px}
+
+nav{
+  display:flex;
+  gap:7px;
+  padding:12px;
+  overflow-x:auto;
+  background:#0d1728;
 }
-.nav{
-  display:flex;gap:8px;overflow-x:auto;
-  padding:4px 0 14px;
+
+button{
+  padding:11px 14px;
+  border:0;
+  border-radius:9px;
+  background:#91aaff;
+  color:#09111f;
+  font-weight:bold;
+  cursor:pointer;
 }
-.nav button{
-  white-space:nowrap;background:var(--panel);
-  color:var(--text);border:1px solid var(--border);
-  padding:11px 14px;border-radius:10px;
+
+nav button{
+  white-space:nowrap;
+  background:#23334d;
+  color:white;
 }
-.nav button.active,.primary{
-  background:var(--accent);color:white;border-color:var(--accent)
+
+nav button.active{background:#91aaff;color:#09111f}
+
+main{padding:12px;max-width:1200px;margin:auto}
+
+.page{display:none}
+.page.active{display:block}
+
+.card{
+  background:#111e32;
+  border:1px solid #293b58;
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:12px;
+  min-width:0;
 }
-.panel{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:16px;padding:16px;margin-bottom:14px;
-}
-h1{font-size:25px;margin:8px 0}
-h2{font-size:19px;margin:0 0 14px}
-h3{font-size:15px}
-p{color:var(--muted);line-height:1.6}
+
 .grid{
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
   gap:12px;
 }
-.card{
-  background:var(--card);border:1px solid var(--border);
-  padding:16px;border-radius:13px;min-width:0;
+
+label{
+  display:block;
+  margin:12px 0 6px;
+  color:#b7c5dc;
+  font-size:13px;
 }
-.card .icon{font-size:26px}
-.card h3{margin:10px 0 4px}
+
 input,textarea,select{
-  width:100%;padding:12px;border-radius:9px;
-  border:1px solid var(--border);background:#0d1527;
-  color:white;margin:6px 0 12px;
+  width:100%;
+  padding:12px;
+  background:#091321;
+  color:white;
+  border:1px solid #344762;
+  border-radius:8px;
+  font:inherit;
 }
+
 textarea{min-height:110px;resize:vertical}
-button{
-  padding:11px 14px;border-radius:9px;
-  border:1px solid var(--border);
-  background:var(--card);color:white;
+
+.code{
+  font-family:monospace;
+  min-height:220px;
+  white-space:pre;
 }
-.primary{border:0}
-.secondary{margin:3px 3px 3px 0}
-.row{display:flex;gap:8px;flex-wrap:wrap}
-.row>*{flex:1}
-.hidden{display:none!important}
-.muted{font-size:13px;color:var(--muted)}
-.status{font-size:13px;color:#8ff0bd;margin-top:8px}
-.editor{
-  width:100%;min-height:220px;
-  font-family:monospace;font-size:13px;line-height:1.5;
+
+.row{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:12px;
 }
+
+.row button{flex:1}
+
+.secondary{background:#2a3b55;color:white}
+.green{background:#4ade80}
+
+.muted{color:#a9b8cf;font-size:13px;line-height:1.6}
+
+.status{
+  margin-top:12px;
+  padding:12px;
+  border-radius:8px;
+  background:#08101c;
+  overflow-wrap:anywhere;
+  white-space:pre-wrap;
+}
+
 iframe{
-  width:100%;height:320px;background:white;
-  border:0;border-radius:10px;
+  width:100%;
+  height:350px;
+  border:1px solid #344762;
+  border-radius:10px;
+  background:white;
 }
-.chatbox{
-  height:220px;overflow-y:auto;
-  background:#0d1527;padding:12px;border-radius:10px;
-  margin-bottom:12px;
+
+.item{
+  border:1px solid #344762;
+  border-radius:9px;
+  padding:10px;
+  margin-top:8px;
+  overflow-wrap:anywhere;
 }
-.msg{padding:10px;margin:7px 0;border-radius:9px;line-height:1.5}
-.bot{background:#202d49}
-.user{background:#403784;text-align:right}
-footer{text-align:center;color:var(--muted);padding:22px;font-size:12px}
-@media(min-width:750px){
-  .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .workspace{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+footer{
+  text-align:center;
+  padding:20px;
+  color:#a9b8cf;
+  font-size:12px;
+}
+
+.cube-area{
+  height:240px;
+  display:grid;
+  place-items:center;
+  perspective:600px;
+}
+
+.cube{
+  width:100px;
+  height:100px;
+  position:relative;
+  transform-style:preserve-3d;
+  animation:spin 8s linear infinite;
+}
+
+.face{
+  position:absolute;
+  width:100px;
+  height:100px;
+  display:grid;
+  place-items:center;
+  background:#91aaff;
+  border:2px solid white;
+  color:#09111f;
+  font-weight:bold;
+}
+
+.front{transform:translateZ(50px)}
+.back{transform:rotateY(180deg) translateZ(50px)}
+.right{transform:rotateY(90deg) translateZ(50px)}
+.left{transform:rotateY(-90deg) translateZ(50px)}
+.top{transform:rotateX(90deg) translateZ(50px)}
+.bottom{transform:rotateX(-90deg) translateZ(50px)}
+
+@keyframes spin{
+  to{transform:rotateX(340deg) rotateY(360deg)}
+}
+
+@media(max-width:700px){
+  .grid{grid-template-columns:1fr}
+  main{padding:9px}
+  .card{padding:12px}
+  iframe{height:300px}
 }
 </style>
 </head>
 
 <body>
-<div class="app">
 
 <header>
-  <div class="logo">SIMHA <span>AI</span></div>
-  <div class="badge">● Workspace Ready</div>
+  <h1>SIMHA AI</h1>
+  <p>Build • Test • Save • Create</p>
 </header>
 
-<nav class="nav">
-  <button class="active" onclick="showPage('home',this)">🏠 Home</button>
-  <button onclick="showPage('developer',this)">🤖 AI Developer</button>
-  <button onclick="showPage('projects',this)">📁 Projects</button>
-  <button onclick="showPage('clients',this)">🔎 Clients</button>
-  <button onclick="showPage('proposal',this)">📝 Proposal</button>
-  <button onclick="showPage('three',this)">🧊 3D Creator</button>
+<nav>
+  <button class="active" data-page="home">Home</button>
+  <button data-page="builder">Website Builder</button>
+  <button data-page="chat">Chat</button>
+  <button data-page="editor">Code Editor</button>
+  <button data-page="projects">My Projects</button>
+  <button data-page="clients">Client Finder</button>
+  <button data-page="proposal">Proposal Maker</button>
+  <button data-page="creator">3D Creator</button>
 </nav>
 
+<main>
+
 <!-- HOME -->
-<section id="home" class="page">
-  <div class="panel">
-    <p>YOUR PERSONAL DIGITAL WORKSPACE</p>
-    <h1>Build your ideas with SIMHA AI.</h1>
-    <p>Create website prototypes, preview code, save projects
-    and prepare business proposals in one workspace.</p>
-    <button class="primary" onclick="go('developer')">
-      + Create a Project
-    </button>
+<section id="home" class="page active">
+  <div class="card">
+    <h2>Welcome to SIMHA AI 👋</h2>
+    <p class="muted">
+      Create websites, edit code, preview your work and save projects.
+      Designed for mobile use.
+    </p>
+
+    <div class="row">
+      <button data-go="builder">Create Website</button>
+      <button class="secondary" data-go="editor">Code Editor</button>
+      <button class="secondary" data-go="chat">Open Chat</button>
+    </div>
   </div>
 
   <div class="grid">
-    <div class="card" onclick="go('developer')">
-      <div class="icon">🤖</div>
-      <h3>AI Developer</h3>
-      <p>Describe your website idea and generate a starter page.</p>
+    <div class="card">
+      <h3>Website Builder</h3>
+      <p class="muted">Create a website from your description.</p>
     </div>
-    <div class="card" onclick="go('projects')">
-      <div class="icon">📁</div>
-      <h3>My Projects</h3>
-      <p>Save and reopen your work on this device.</p>
+
+    <div class="card">
+      <h3>Code Editor</h3>
+      <p class="muted">Edit HTML, CSS and JavaScript.</p>
     </div>
-    <div class="card" onclick="go('clients')">
-      <div class="icon">🔎</div>
-      <h3>Client Finder</h3>
-      <p>Find potential customers through public search pages.</p>
+
+    <div class="card">
+      <h3>Project Manager</h3>
+      <p class="muted">Save and reopen projects in this browser.</p>
     </div>
-    <div class="card" onclick="go('proposal')">
-      <div class="icon">📝</div>
-      <h3>Proposal Generator</h3>
-      <p>Prepare a proposal for your next project.</p>
-    </div>
-    <div class="card" onclick="go('three')">
-      <div class="icon">🧊</div>
-      <h3>3D Creator</h3>
-      <p>Create a simple animated 3D object.</p>
-    </div>
-    <div class="card" onclick="go('developer')">
-      <div class="icon">💻</div>
-      <h3>Code & Preview</h3>
-      <p>Edit HTML, CSS and JavaScript with a live preview.</p>
+
+    <div class="card">
+      <h3>Business Tools</h3>
+      <p class="muted">Find businesses and prepare proposals.</p>
     </div>
   </div>
 </section>
 
-<!-- DEVELOPER -->
-<section id="developer" class="page hidden">
-  <div class="panel">
-    <h2>🤖 AI Website Developer</h2>
-    <label>Project name</label>
-    <input id="projectName" placeholder="My Business Website">
+<!-- WEBSITE BUILDER -->
+<section id="builder" class="page">
+  <div class="grid">
+    <div class="card">
+      <h2>Website Builder</h2>
 
-    <label>Describe what you want to build</label>
-    <textarea id="idea" placeholder="Example: Create a modern website for a small clothing shop with products, prices and a contact button."></textarea>
+      <label>Website Name</label>
+      <input id="siteName" value="SIMHA Business">
 
-    <button class="primary" onclick="generate()">Generate Starter Website</button>
-    <p class="muted">This version uses local templates. It is not connected
-    to a real AI model yet.</p>
-    <div id="generateStatus" class="status"></div>
-  </div>
+      <label>Describe Your Website</label>
+      <textarea id="siteDescription">A modern mobile-friendly website for a small business. Show services, about us and contact information.</textarea>
 
-  <div class="panel">
-    <h2>💬 Workspace Chat</h2>
-    <div id="chat" class="chatbox">
-      <div class="msg bot">Hello! Describe your idea. I can help with
-      simple starter templates and project instructions.</div>
+      <label>Website Theme</label>
+      <select id="theme">
+        <option value="dark">Dark Modern</option>
+        <option value="light">Light Clean</option>
+        <option value="green">Fresh Green</option>
+      </select>
+
+      <div class="row">
+        <button id="generateBtn">Generate Website</button>
+        <button id="previewBtn" class="secondary">Preview</button>
+      </div>
+
+      <p id="builderStatus" class="muted">Ready.</p>
     </div>
-    <textarea id="chatInput" placeholder="Type a message or change request..."></textarea>
-    <button class="primary" onclick="sendChat()">Send Message</button>
-  </div>
 
-  <div class="panel">
-    <h2>💻 Code Editor</h2>
+    <div class="card">
+      <h3>Generated HTML</h3>
+      <textarea id="generatedHTML" class="code"></textarea>
+      <button id="useGenerated" style="margin-top:10px">
+        Open in Code Editor
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- CHAT -->
+<section id="chat" class="page">
+  <div class="card">
+    <h2>SIMHA Chat</h2>
+
+    <p class="muted">
+      This version provides built-in demo replies.
+      A real AI model is not connected yet.
+    </p>
+
+    <div id="messages">
+      <div class="item">
+        SIMHA: Hello! Tell me what you want to create.
+      </div>
+    </div>
+
+    <label>Your Message</label>
+
     <div class="row">
-      <button onclick="editorTab('html')">HTML</button>
-      <button onclick="editorTab('css')">CSS</button>
-      <button onclick="editorTab('js')">JavaScript</button>
+      <input id="chatInput" placeholder="I want to create a website">
+      <button id="sendChat">Send</button>
     </div>
-
-    <p id="editorLabel" class="muted">HTML code</p>
-    <textarea id="codeEditor" class="editor" spellcheck="false"></textarea>
-
-    <div class="row">
-      <button class="primary" onclick="applyCode()">Update Code</button>
-      <button onclick="preview()">▶ Preview</button>
-      <button onclick="checkCode()">✓ Check Code</button>
-    </div>
-    <div id="codeStatus" class="status"></div>
   </div>
+</section>
 
-  <div class="panel">
-    <h2>👁️ Live Preview</h2>
-    <iframe id="previewFrame" title="Website preview"
-    sandbox="allow-scripts"></iframe>
-    <div class="row" style="margin-top:12px">
-      <button onclick="preview()">Refresh Preview</button>
-      <button class="primary" onclick="downloadSite()">Download Website</button>
+<!-- CODE EDITOR -->
+<section id="editor" class="page">
+  <div class="card">
+    <h2>Code Editor</h2>
+    <p class="muted">Edit your code and run the preview.</p>
+
+    <div class="grid">
+      <div>
+        <label>HTML</label>
+        <textarea id="htmlCode" class="code" spellcheck="false"></textarea>
+      </div>
+
+      <div>
+        <label>CSS</label>
+        <textarea id="cssCode" class="code" spellcheck="false"></textarea>
+      </div>
+
+      <div>
+        <label>JavaScript</label>
+        <textarea id="jsCode" class="code" spellcheck="false"></textarea>
+      </div>
+
+      <div>
+        <label>Tools</label>
+
+        <div class="row">
+          <button id="runBtn">Run Preview</button>
+          <button id="checkBtn" class="secondary">Check JS</button>
+        </div>
+
+        <div class="row">
+          <button id="downloadBtn" class="green">Download HTML</button>
+          <button id="fixBtn" class="secondary">Basic Auto-fix</button>
+        </div>
+
+        <div id="codeStatus" class="status">Ready.</div>
+      </div>
     </div>
+
+    <label>Live Preview</label>
+    <iframe id="previewFrame" title="Website preview" sandbox="allow-scripts"></iframe>
   </div>
 </section>
 
 <!-- PROJECTS -->
-<section id="projects" class="page hidden">
-  <div class="panel">
-    <h2>📁 My Projects</h2>
-    <p>Projects are saved in this browser on this device.</p>
-    <input id="saveName" placeholder="Project name">
-    <button class="primary" onclick="saveProject()">Save Current Project</button>
-    <div id="projectList" style="margin-top:16px"></div>
+<section id="projects" class="page">
+  <div class="grid">
+    <div class="card">
+      <h2>My Projects</h2>
+
+      <label>Project Name</label>
+      <input id="projectName" placeholder="My first website">
+
+      <div class="row">
+        <button id="saveBtn">Save Project</button>
+        <button id="exportBtn" class="secondary">Download JSON</button>
+      </div>
+
+      <p id="projectStatus" class="muted"></p>
+
+      <p class="muted">
+        Projects are saved in this browser. Clearing browser data
+        may remove them.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Saved Projects</h3>
+      <div id="projectList"></div>
+    </div>
   </div>
 </section>
 
-<!-- CLIENTS -->
-<section id="clients" class="page hidden">
-  <div class="panel">
-    <h2>🔎 Client Finder</h2>
-    <p>Prepare public search links to discover businesses that may need
-    a website. These links do not automatically find or contact clients.</p>
-    <label>Business type</label>
-    <input id="businessType" placeholder="Example: restaurants">
-    <label>Location</label>
-    <input id="businessLocation" placeholder="Example: Bengaluru">
-    <button class="primary" onclick="findClients()">Create Search Links</button>
-    <div id="clientResults" style="margin-top:16px"></div>
+<!-- CLIENT FINDER -->
+<section id="clients" class="page">
+  <div class="grid">
+    <div class="card">
+      <h2>Client Finder</h2>
+
+      <p class="muted">
+        Search for potential customers using external search websites.
+      </p>
+
+      <label>Business Type</label>
+      <input id="businessType" placeholder="Bakery, salon, mechanic">
+
+      <label>City / Area</label>
+      <input id="businessPlace" value="Dharmavaram">
+
+      <div class="row">
+        <button id="googleBtn">Google</button>
+        <button id="mapsBtn" class="secondary">Maps</button>
+        <button id="bingBtn" class="secondary">Bing</button>
+      </div>
+
+      <div id="clientStatus" class="status">
+        Enter a business type.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Client Message</h3>
+
+      <textarea id="outreach">Hello! I create mobile-friendly websites for small businesses. I can help display your services and contact details online. Would you like to see a sample?</textarea>
+
+      <button id="copyMessage" style="margin-top:10px">
+        Copy Message
+      </button>
+
+      <p id="copyStatus" class="muted"></p>
+    </div>
   </div>
 </section>
 
 <!-- PROPOSAL -->
-<section id="proposal" class="page hidden">
-  <div class="panel">
-    <h2>📝 Proposal Generator</h2>
-    <label>Client name</label>
-    <input id="clientName" placeholder="Client or business name">
-    <label>Project type</label>
-    <input id="proposalType" placeholder="Example: Business website">
-    <label>Price (₹)</label>
-    <input id="proposalPrice" type="number" placeholder="5000">
-    <label>Project details</label>
-    <textarea id="proposalDetails" placeholder="Pages, features and delivery time"></textarea>
-    <button class="primary" onclick="makeProposal()">Generate Proposal</button>
-    <textarea id="proposalOutput" placeholder="Your proposal will appear here"></textarea>
-    <button onclick="copyProposal()">Copy Proposal</button>
-  </div>
-</section>
+<section id="proposal" class="page">
+  <div class="grid">
+    <div class="card">
+      <h2>Proposal Maker</h2>
 
-<!-- 3D -->
-<section id="three" class="page hidden">
-  <div class="panel">
-    <h2>🧊 3D Creator</h2>
-    <p>Experiment with a rotating 3D cube. This is a simple CSS demo.</p>
-    <div style="height:230px;display:grid;place-items:center;
-    perspective:600px;overflow:hidden">
-      <div id="cube" style="width:100px;height:100px;
-      background:linear-gradient(135deg,#7c6cff,#00d4ff);
-      box-shadow:0 0 45px #7c6cff66;
-      animation:spin 5s linear infinite"></div>
+      <label>Client Name</label>
+      <input id="clientName" placeholder="ABC Business">
+
+      <label>Service</label>
+      <select id="serviceType">
+        <option>Mobile-Friendly Website</option>
+        <option>Landing Page</option>
+        <option>Product Catalogue Website</option>
+        <option>Business Dashboard Prototype</option>
+      </select>
+
+      <label>Estimated Price (₹)</label>
+      <input id="price" type="number" min="0" value="3000">
+
+      <label>Delivery Days</label>
+      <input id="days" type="number" min="1" value="5">
+
+      <button id="makeProposal" style="margin-top:12px">
+        Create Proposal
+      </button>
     </div>
-    <style>
-      #cube{transform-style:preserve-3d}
-      @keyframes spin{
-        from{transform:rotateX(0deg) rotateY(0deg)}
-        to{transform:rotateX(360deg) rotateY(360deg)}
-      }
-    </style>
-    <label>Animation speed</label>
-    <select id="cubeSpeed" onchange="setCubeSpeed()">
-      <option value="2s">Fast</option>
-      <option value="5s" selected>Normal</option>
-      <option value="10s">Slow</option>
-    </select>
-    <button class="primary" onclick="toggleCube()">Pause / Play</button>
+
+    <div class="card">
+      <h3>Proposal Output</h3>
+      <textarea id="proposalOutput" style="min-height:260px"></textarea>
+
+      <button id="copyProposal" style="margin-top:10px">
+        Copy Proposal
+      </button>
+
+      <p id="proposalStatus" class="muted"></p>
+    </div>
   </div>
 </section>
 
-<footer>
-  SIMHA AI Workspace · Starter Version<br>
-  Built for learning and creating.
-</footer>
-</div>
+<!-- 3D CREATOR -->
+<section id="creator" class="page">
+  <div class="grid">
+    <div class="card">
+      <h2>3D Creator</h2>
+
+      <p class="muted">Animated CSS 3D cube demonstration.</p>
+
+      <label>Cube Label</label>
+      <input id="cubeLabel" value="SIMHA">
+
+      <button id="updateCube" style="margin-top:10px">
+        Update Cube
+      </button>
+
+      <div class="cube-area">
+        <div class="cube" id="cube">
+          <div class="face front">SIMHA</div>
+          <div class="face back">AI</div>
+          <div class="face right">3D</div>
+          <div class="face left">WEB</div>
+          <div class="face top">BUILD</div>
+          <div class="face bottom">CREATE</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Current Status</h3>
+      <p class="muted">
+        This is a visual prototype, not a full 3D modelling engine.
+        A real AI service and backend are not connected.
+      </p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>SIMHA AI • Mobile Workspace</footer>
 
 <script>
-let currentPage = "home";
-let currentTab = "html";
+"use strict";
 
-let code = {
-  html: `<div class="hero">
-  <h1>Welcome to My Website</h1>
-  <p>Build something great with SIMHA AI.</p>
-  <button onclick="alert('Welcome!')">Get Started</button>
-</div>`,
-  css: `body {
-  font-family: Arial, sans-serif;
-  padding: 30px;
-  background: #f2f4ff;
-  color: #17203a;
-}
-.hero {
-  max-width: 600px;
-  margin: 30px auto;
-  padding: 35px;
-  border-radius: 18px;
-  background: white;
-  text-align: center;
-  box-shadow: 0 8px 30px #0001;
-}
-button {
-  background: #6755e8;
-  color: white;
-  border: 0;
-  border-radius: 8px;
-  padding: 12px 20px;
-}`,
-  js: `console.log("My website is ready!");`
-};
+/* Common helpers */
 
-function showPage(id, button) {
-  currentPage = id;
-  document.querySelectorAll(".page").forEach(p =>
-    p.classList.add("hidden")
-  );
-  document.getElementById(id).classList.remove("hidden");
+const $ = id => document.getElementById(id);
 
-  document.querySelectorAll(".nav button").forEach(b =>
-    b.classList.remove("active")
-  );
+function goToPage(id){
+  document.querySelectorAll(".page").forEach(page=>{
+    page.classList.toggle("active",page.id===id);
+  });
 
-  if (button) button.classList.add("active");
-  else {
-    document.querySelectorAll(".nav button").forEach(b => {
-      if (b.getAttribute("onclick").includes("'" + id + "'"))
-        b.classList.add("active");
-    });
-  }
+  document.querySelectorAll("[data-page]").forEach(button=>{
+    button.classList.toggle("active",button.dataset.page===id);
+  });
 
-  if (id === "projects") renderProjects();
-  if (id === "developer") loadEditor();
-}
+  if(id==="projects") renderProjects();
 
-function go(id) {
-  showPage(id);
   window.scrollTo({top:0,behavior:"smooth"});
 }
 
-function editorTab(tab) {
-  code[currentTab] = document.getElementById("codeEditor").value;
-  currentTab = tab;
-  loadEditor();
-}
+document.querySelectorAll("[data-page]").forEach(button=>{
+  button.addEventListener("click",()=>goToPage(button.dataset.page));
+});
 
-function loadEditor() {
-  document.getElementById("codeEditor").value = code[currentTab];
-  document.getElementById("editorLabel").textContent =
-    currentTab.toUpperCase() + " code";
-}
+document.querySelectorAll("[data-go]").forEach(button=>{
+  button.addEventListener("click",()=>goToPage(button.dataset.go));
+});
 
-function applyCode() {
-  code[currentTab] = document.getElementById("codeEditor").value;
-  document.getElementById("codeStatus").textContent =
-    currentTab.toUpperCase() + " code updated.";
-  preview();
-}
-
-function preview() {
-  code[currentTab] = document.getElementById("codeEditor").value;
-
-  const html = code.html;
-  const css = code.css;
-  const js = code.js.replace(/<\/script/gi, "<\\/script");
-
-  const output = `<!DOCTYPE html>
-<html>
-<head><meta name="viewport" content="width=device-width,initial-scale=1">
-<style>${css}</style></head>
-<body>${html}
-<script>${js}<\/script>
-</body></html>`;
-
-  document.getElementById("previewFrame").srcdoc = output;
-}
-
-function checkCode() {
-  applyCode();
-
-  const value = code[currentTab];
-  let message = "Basic check complete.";
-
-  if (currentTab === "html") {
-    if (!value.includes("<")) message = "Possible issue: HTML tags are missing.";
-    else if ((value.match(/</g)||[]).length !==
-             (value.match(/>/g)||[]).length)
-      message = "Possible issue: check your HTML tags.";
-  }
-
-  if (currentTab === "css" && value.includes("{") &&
-      !value.includes("}"))
-    message = "Possible issue: CSS closing brace } is missing.";
-
-  if (currentTab === "js") {
-    try {
-      new Function(value);
-      message = "JavaScript syntax check passed.";
-    } catch(e) {
-      message = "JavaScript error: " + e.message;
-    }
-  }
-
-  document.getElementById("codeStatus").textContent = message;
-}
-
-function generate() {
-  const idea = document.getElementById("idea").value.trim();
-  const name = document.getElementById("projectName").value.trim();
-
-  if (!idea) {
-    document.getElementById("generateStatus").textContent =
-      "Please describe your website idea first.";
-    return;
-  }
-
-  const title = name || "My Business Website";
-  const safeTitle = title.replace(/[&<>"]/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"
-  }[c]));
-
-  code.html = `<main class="hero">
-  <h1>${safeTitle}</h1>
-  <p>${idea.replace(/[&<>"]/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"
-  }[c])}</p>
-  <button onclick="alert('Thank you for visiting!')">
-  Contact Us</button>
-</main>`;
-
-  code.css = `body {
-  font-family: Arial, sans-serif;
-  background: #f2f4ff;
-  color: #17203a;
-  padding: 25px;
-}
-.hero {
-  max-width: 650px;
-  margin: 30px auto;
-  background: white;
-  padding: 35px;
-  border-radius: 18px;
-  text-align: center;
-  box-shadow: 0 10px 30px #0001;
-}
-button {
-  background: #6755e8;
-  color: white;
-  border: 0;
-  padding: 12px 22px;
-  border-radius: 8px;
-}`;
-
-  code.js = `console.log("Website created with SIMHA AI starter.");`;
-
-  currentTab = "html";
-  loadEditor();
-  preview();
-
-  document.getElementById("generateStatus").textContent =
-    "Starter website generated! Check the code and preview below.";
-
-  document.getElementById("codeStatus").textContent =
-    "Your starter website is ready to edit.";
-
-  document.querySelector(".workspace");
-}
-
-function sendChat() {
-  const input = document.getElementById("chatInput");
-  const text = input.value.trim();
-  if (!text) return;
-
-  addMessage(text, "user");
-  input.value = "";
-
-  let reply = "I can help you create a starter website. Use the AI Developer section to generate a page, then edit the HTML, CSS or JavaScript.";
-
-  const t = text.toLowerCase();
-
-  if (t.includes("preview")) {
-    preview();
-    reply = "I refreshed the website preview.";
-  } else if (t.includes("save")) {
-    reply = "Open My Projects and choose Save Current Project.";
-  } else if (t.includes("html")) {
-    editorTab("html");
-    reply = "The HTML editor is selected.";
-  } else if (t.includes("css")) {
-    editorTab("css");
-    reply = "The CSS editor is selected.";
-  } else if (t.includes("javascript") || t.includes(" js")) {
-    editorTab("js");
-    reply = "The JavaScript editor is selected.";
-  } else if (t.includes("error")) {
-    checkCode();
-    reply = document.getElementById("codeStatus").textContent;
-  } else if (t.includes("hello") || t.includes("hi")) {
-    reply = "Hello! Tell me what kind of website you want to build.";
-  }
-
-  setTimeout(() => addMessage(reply, "bot"), 250);
-}
-
-function addMessage(text, type) {
-  const box = document.getElementById("chat");
-  const div = document.createElement("div");
-  div.className = "msg " + type;
-  div.textContent = text;
-  box.appendChild(div);
-  box.scrollTop = box.scrollHeight;
-}
-
-function saveProject() {
-  code[currentTab] = document.getElementById("codeEditor").value;
-
-  const name = document.getElementById("saveName").value.trim() ||
-    document.getElementById("projectName").value.trim() ||
-    "My Project";
-
-  const projects = JSON.parse(localStorage.getItem("simhaProjects") || "[]");
-  projects.push({
-    id: Date.now(),
-    name: name,
-    code: {...code},
-    date: new Date().toLocaleString()
-  });
-
-  localStorage.setItem("simhaProjects", JSON.stringify(projects));
-  document.getElementById("saveName").value = "";
-  renderProjects();
-  alert("Project saved on this device.");
-}
-
-function renderProjects() {
-  const projects = JSON.parse(localStorage.getItem("simhaProjects") || "[]");
-  const list = document.getElementById("projectList");
-
-  if (!projects.length) {
-    list.textContent = "No saved projects yet.";
-    return;
-  }
-
-  list.replaceChildren();
-
-  projects.slice().reverse().forEach(p => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.style.marginBottom = "10px";
-
-    const title = document.createElement("h3");
-    title.textContent = p.name;
-
-    const date = document.createElement("p");
-    date.textContent = p.date;
-
-    const open = document.createElement("button");
-    open.textContent = "Open";
-    open.onclick = () => {
-      code = {...p.code};
-      document.getElementById("projectName").value = p.name;
-      currentTab = "html";
-      loadEditor();
-      preview();
-      go("developer");
+function escapeHTML(text){
+  return String(text).replace(/[&<>"']/g,char=>{
+    const map={
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
     };
+    return map[char];
+  });
+}
 
-    const remove = document.createElement("button");
-    remove.textContent = "Delete";
-    remove.style.marginLeft = "8px";
-    remove.onclick = () => {
-      if (!confirm("Delete this project?")) return;
-      const remaining = projects.filter(x => x.id !== p.id);
-      localStorage.setItem("simhaProjects", JSON.stringify(remaining));
+/* Code editor and preview */
+
+const defaultHTML =
+  '<main class="hero">' +
+  '<h1>Welcome to SIMHA</h1>' +
+  '<p>Build something great.</p>' +
+  '<button onclick="alert(\\'Thanks for visiting!\\')">Contact Us</button>' +
+  '</main>';
+
+const defaultCSS =
+  'body{margin:0;font-family:Arial;background:#101827;color:white}' +
+  '.hero{min-height:100vh;display:flex;flex-direction:column;' +
+  'align-items:center;justify-content:center;text-align:center;padding:25px}' +
+  'h1{font-size:clamp(30px,7vw,55px)}' +
+  'p{line-height:1.7;color:#cbd5e1}' +
+  'button{padding:12px 20px;border:0;border-radius:9px;' +
+  'background:#91aaff;font-weight:bold}';
+
+const defaultJS =
+  'console.log("SIMHA website ready");';
+
+function buildDocument(){
+  const html=$("htmlCode").value;
+  const css=$("cssCode").value;
+
+  // Escape script closing tags so they cannot break the document.
+  const js=$("jsCode").value.replace(/<\/script/gi,"<\\/script");
+
+  return '<!DOCTYPE html><html><head>' +
+    '<meta charset="UTF-8">' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<style>' + css + '</style></head><body>' +
+    html +
+    '<script>try{' + js +
+    '}catch(error){document.body.insertAdjacentHTML("beforeend",' +
+    '"<pre>JavaScript error: "+String(error)+"</pre>")}' +
+    '<\/script></body></html>';
+}
+
+function runPreview(){
+  try{
+    $("previewFrame").srcdoc=buildDocument();
+    $("codeStatus").textContent="Preview updated successfully.";
+  }catch(error){
+    $("codeStatus").textContent="Preview error: "+error.message;
+  }
+}
+
+function setCode(html,css,js){
+  $("htmlCode").value=html;
+  $("cssCode").value=css;
+  $("jsCode").value=js;
+  runPreview();
+}
+
+$("runBtn").addEventListener("click",runPreview);
+
+$("checkBtn").addEventListener("click",()=>{
+  try{
+    new Function($("jsCode").value);
+    $("codeStatus").textContent=
+      "JavaScript syntax looks valid. Runtime errors may still occur.";
+  }catch(error){
+    $("codeStatus").textContent=
+      "JavaScript syntax error: "+error.message;
+  }
+});
+
+$("fixBtn").addEventListener("click",()=>{
+  $("jsCode").value=$("jsCode").value
+    .replace(/[“”]/g,'"')
+    .replace(/[‘’]/g,"'");
+
+  try{
+    new Function($("jsCode").value);
+    $("codeStatus").textContent=
+      "Basic quote cleanup completed. Syntax check passed.";
+  }catch(error){
+    $("codeStatus").textContent=
+      "Some errors remain: "+error.message;
+  }
+});
+
+function downloadFile(name,content,type){
+  const blob=new Blob([content],{type:type||"text/plain"});
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");
+
+  link.href=url;
+  link.download=name;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+
+$("downloadBtn").addEventListener("click",()=>{
+  downloadFile("simha-website.html",buildDocument(),"text/html");
+});
+
+/* Website builder */
+
+$("generateBtn").addEventListener("click",()=>{
+  const title=$("siteName").value.trim()||"My Website";
+  const description=
+    $("siteDescription").value.trim()||"Welcome to our business.";
+
+  let background="#101827";
+  let foreground="#ffffff";
+  let accent="#91aaff";
+
+  if($("theme").value==="light"){
+    background="#f8fafc";
+    foreground="#172033";
+    accent="#2563eb";
+  }
+
+  if($("theme").value==="green"){
+    background="#eafaf1";
+    foreground="#143c2b";
+    accent="#16a34a";
+  }
+
+  const html=
+    '<main class="hero">' +
+    '<small>WELCOME</small>' +
+    '<h1>'+escapeHTML(title)+'</h1>' +
+    '<p>'+escapeHTML(description)+'</p>' +
+    '<section class="cards">' +
+    '<article><h2>Our Services</h2><p>Helpful solutions for you.</p></article>' +
+    '<article><h2>About Us</h2><p>Quality and friendly service.</p></article>' +
+    '<article><h2>Contact</h2><p>Contact us to learn more.</p></article>' +
+    '</section>' +
+    '<button onclick="alert(\\'Thank you for visiting!\\')">Contact Us</button>' +
+    '</main>';
+
+  const css=
+    'body{margin:0;background:'+background+';color:'+foreground+';' +
+    'font-family:Arial,sans-serif}' +
+    '.hero{min-height:100vh;padding:35px 18px;text-align:center;' +
+    'display:flex;flex-direction:column;align-items:center;justify-content:center}' +
+    'h1{font-size:clamp(30px,7vw,55px)}' +
+    'p{line-height:1.7;max-width:650px}' +
+    '.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));' +
+    'gap:12px;width:100%;max-width:850px;margin:20px 0}' +
+    '.cards article{padding:15px;border:1px solid '+accent+';border-radius:12px}' +
+    'button{padding:12px 18px;border:0;border-radius:9px;background:'+accent+';color:white}';
+
+  $("generatedHTML").value=html;
+
+  setCode(html,css,'console.log("Website ready");');
+
+  $("builderStatus").textContent=
+    "Website generated. You can preview or edit the code.";
+
+  goToPage("builder");
+});
+
+$("previewBtn").addEventListener("click",()=>{
+  if(!$("generatedHTML").value.trim()){
+    $("generateBtn").click();
+  }
+
+  $("htmlCode").value=$("generatedHTML").value;
+  runPreview();
+  goToPage("editor");
+});
+
+$("useGenerated").addEventListener("click",()=>{
+  $("htmlCode").value=$("generatedHTML").value||defaultHTML;
+  runPreview();
+  goToPage("editor");
+});
+
+/* Demo chat - not connected to a real AI model */
+
+function getReply(message){
+  const text=message.toLowerCase();
+
+  if(text.includes("website")||text.includes("site")){
+    return "Open Website Builder, enter your website name and description, then tap Generate Website.";
+  }
+
+  if(text.includes("error")||text.includes("bug")){
+    return "Open Code Editor and tap Check JS. Read the error message, correct the code and run Preview.";
+  }
+
+  if(text.includes("save")){
+    return "Open My Projects, enter a project name and tap Save Project.";
+  }
+
+  if(text.includes("client")){
+    return "Open Client Finder and search for a business type in your selected area.";
+  }
+
+  return "I can guide you through Website Builder, Code Editor, My Projects, Client Finder and Proposal Maker. This demo is not connected to a live AI model.";
+}
+
+$("sendChat").addEventListener("click",()=>{
+  const message=$("chatInput").value.trim();
+  if(!message)return;
+
+  const user=document.createElement("div");
+  user.className="item";
+  user.textContent="You: "+message;
+
+  const answer=document.createElement("div");
+  answer.className="item";
+  answer.textContent="SIMHA: "+getReply(message);
+
+  $("messages").append(user,answer);
+  $("chatInput").value="";
+});
+
+$("chatInput").addEventListener("keydown",event=>{
+  if(event.key==="Enter") $("sendChat").click();
+});
+
+/* Project storage */
+
+function getProjects(){
+  try{
+    return JSON.parse(localStorage.getItem("simhaProjects")||"{}");
+  }catch(error){
+    return {};
+  }
+}
+
+function renderProjects(){
+  const projects=getProjects();
+  const list=$("projectList");
+  list.innerHTML="";
+
+  const names=Object.keys(projects);
+
+  if(names.length===0){
+    list.textContent="No saved projects yet.";
+    return;
+  }
+
+  names.forEach(name=>{
+    const row=document.createElement("div");
+    row.className="item";
+
+    const title=document.createElement("span");
+    title.textContent=name;
+
+    const open=document.createElement("button");
+    open.textContent="Open";
+
+    open.addEventListener("click",()=>{
+      const project=projects[name];
+
+      setCode(project.html,project.css,project.js);
+      $("projectName").value=name;
+      goToPage("editor");
+    });
+
+    const remove=document.createElement("button");
+    remove.textContent="Delete";
+    remove.className="secondary";
+
+    remove.addEventListener("click",()=>{
+      if(!confirm("Delete project "+name+"?"))return;
+
+      const all=getProjects();
+      delete all[name];
+
+      localStorage.setItem("simhaProjects",JSON.stringify(all));
       renderProjects();
-    };
+    });
 
-    card.append(title, date, open, remove);
-    list.appendChild(card);
+    row.append(title,open,remove);
+    list.appendChild(row);
   });
 }
 
-function downloadSite() {
-  code[currentTab] = document.getElementById("codeEditor").value;
+$("saveBtn").addEventListener("click",()=>{
+  const name=$("projectName").value.trim();
 
-  const output = `<!DOCTYPE html>
-<html><head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>My Website</title><style>${code.css}</style></head>
-<body>${code.html}<script>${code.js.replace(/<\/script/gi,"<\\/script")}<\/script></body></html>`;
-
-  const blob = new Blob([output], {type:"text/html"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "my-website.html";
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1500);
-}
-
-function findClients() {
-  const type = document.getElementById("businessType").value.trim();
-  const location = document.getElementById("businessLocation").value.trim();
-  const results = document.getElementById("clientResults");
-
-  if (!type || !location) {
-    results.textContent = "Enter both business type and location.";
+  if(!name){
+    $("projectStatus").textContent="Enter a project name first.";
     return;
   }
 
-  results.replaceChildren();
+  const projects=getProjects();
 
-  const searches = [
-    ["Google Search", `https://www.google.com/search?q=${encodeURIComponent(type+" "+location+" business")}`],
-    ["Google Maps", `https://www.google.com/maps/search/${encodeURIComponent(type+" in "+location)}`],
-    ["Bing Search", `https://www.bing.com/search?q=${encodeURIComponent(type+" "+location)}`]
-  ];
+  projects[name]={
+    html:$("htmlCode").value,
+    css:$("cssCode").value,
+    js:$("jsCode").value
+  };
 
-  searches.forEach(([label,url]) => {
-    const p = document.createElement("p");
-    const a = document.createElement("a");
-    a.href = url;
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
-    a.textContent = "Open " + label;
-    a.style.color = "#a69cff";
-    p.appendChild(a);
-    results.appendChild(p);
-  });
-}
+  try{
+    localStorage.setItem("simhaProjects",JSON.stringify(projects));
+    $("projectStatus").textContent="Project saved: "+name;
+    renderProjects();
+  }catch(error){
+    $("projectStatus").textContent="Could not save this project.";
+  }
+});
 
-function makeProposal() {
-  const client = document.getElementById("clientName").value.trim() || "Client";
-  const type = document.getElementById("proposalType").value.trim() || "Website Development";
-  const price = document.getElementById("proposalPrice").value || "To be discussed";
-  const details = document.getElementById("proposalDetails").value.trim() || "Features and timeline to be agreed.";
+$("exportBtn").addEventListener("click",()=>{
+  const project={
+    html:$("htmlCode").value,
+    css:$("cssCode").value,
+    js:$("jsCode").value
+  };
 
-  document.getElementById("proposalOutput").value =
-`PROJECT PROPOSAL
+  downloadFile(
+    "simha-project.json",
+    JSON.stringify(project,null,2),
+    "application/json"
+  );
+});
 
-Prepared for: ${client}
+/* Client finder */
 
-Project: ${type}
+function searchBusinesses(engine){
+  const type=$("businessType").value.trim();
+  const place=$("businessPlace").value.trim();
 
-Scope of Work:
-${details}
-
-Estimated Price: ${price === "To be discussed" ? price : "₹"+price}
-
-Delivery:
-The delivery schedule will be confirmed after the project requirements are approved.
-
-Payment:
-Payment terms will be agreed upon before work begins.
-
-Thank you for considering my services.
-
-Narasimha
-Web App Developer`;
-}
-
-async function copyProposal() {
-  const field = document.getElementById("proposalOutput");
-  if (!field.value) {
-    alert("Generate a proposal first.");
+  if(!type){
+    $("clientStatus").textContent="Enter a business type first.";
     return;
   }
 
-  try {
-    await navigator.clipboard.writeText(field.value);
-    alert("Proposal copied.");
-  } catch(e) {
-    field.select();
-    alert("Select the proposal text and copy it.");
+  const query=encodeURIComponent(type+" "+place);
+
+  const urls={
+    google:"https://www.google.com/search?q="+query,
+    maps:"https://www.google.com/maps/search/"+query,
+    bing:"https://www.bing.com/search?q="+query
+  };
+
+  $("clientStatus").textContent="Opening "+engine+" search results.";
+
+  window.open(urls[engine],"_blank","noopener");
+}
+
+$("googleBtn").addEventListener("click",()=>searchBusinesses("google"));
+$("mapsBtn").addEventListener("click",()=>searchBusinesses("maps"));
+$("bingBtn").addEventListener("click",()=>searchBusinesses("bing"));
+
+async function copyText(text,statusId){
+  try{
+    await navigator.clipboard.writeText(text);
+    $(statusId).textContent="Copied successfully.";
+  }catch(error){
+    $(statusId).textContent=
+      "Automatic copy was blocked. Select the text and copy manually.";
   }
 }
 
-function setCubeSpeed() {
-  document.getElementById("cube").style.animationDuration =
-    document.getElementById("cubeSpeed").value;
-}
+$("copyMessage").addEventListener("click",()=>{
+  copyText($("outreach").value,"copyStatus");
+});
 
-function toggleCube() {
-  const cube = document.getElementById("cube");
-  cube.style.animationPlayState =
-    cube.style.animationPlayState === "paused" ? "running" : "paused";
-}
+/* Proposal maker */
 
-loadEditor();
-preview();
+$("makeProposal").addEventListener("click",()=>{
+  const name=$("clientName").value.trim()||"Business Owner";
+  const service=$("serviceType").value;
+  const price=Math.max(0,Number($("price").value)||0);
+  const days=Math.max(1,Number($("days").value)||1);
+
+  $("proposalOutput").value=
+    "WEBSITE PROJECT PROPOSAL\n\n"+
+    "Prepared for: "+name+"\n"+
+    "Service: "+service+"\n"+
+    "Estimated price: Rs. "+price.toLocaleString("en-IN")+"\n"+
+    "Estimated delivery: "+days+" days\n\n"+
+    "Included:\n"+
+    "- Mobile-friendly layout\n"+
+    "- Basic website sections\n"+
+    "- Contact button\n"+
+    "- Preview and testing\n\n"+
+    "Final scope, hosting and extra features should be agreed before work starts.\n"+
+    "This is an estimate, not a contract.";
+});
+
+$("copyProposal").addEventListener("click",()=>{
+  copyText($("proposalOutput").value,"proposalStatus");
+});
+
+/* 3D cube */
+
+$("updateCube").addEventListener("click",()=>{
+  const label=$("cubeLabel").value.trim()||"SIMHA";
+  $("cube").querySelector(".front").textContent=label.slice(0,12);
+});
+
+/* Start the app */
+
+setCode(defaultHTML,defaultCSS,defaultJS);
+renderProjects();
+
 </script>
+
 </body>
 </html>
